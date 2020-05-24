@@ -1,0 +1,843 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.portal.toolbox</groupId>
+    <artifactId>toolbox</artifactId>
+    <version>1.0</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <cucumber.junit.version>1.2.5</cucumber.junit.version>
+        <selenium.webdriver.version>3.141.59</selenium.webdriver.version>
+        <java.version>1.8</java.version>
+        <junit.version>4.13</junit.version>
+        <hamcrest.version>1.3</hamcrest.version>
+        <cucumber.version>5.5.0</cucumber.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
+        <testFailureIgnore>true</testFailureIgnore>
+        <timestamp>${maven.build.timestamp}</timestamp>
+        <maven.build.timestamp.format>yyyy-MM-dd-HH_mm</maven.build.timestamp.format>
+        <include>**/*FailedRun.class</include>
+        <surefire.fork.count>1</surefire.fork.count>
+        <maven.surefire.plugin.version>3.0.0-M4</maven.surefire.plugin.version>
+        <testFailureIgnore>true</testFailureIgnore>
+        <applitools.version>2.56</applitools.version>
+        <slf4j.version>2.0.0-alpha1</slf4j.version>
+        <jenkinsStyleReports>true</jenkinsStyleReports>
+        <build.number>1.1</build.number>
+
+        <environment>Test</environment>
+        <browserName>$driver</browserName>
+        <platform>Mac</platform>
+        <driverType>$driver</driverType>
+        <chromeDriverPath>${basedir}/src/main/resources/drivers/chromedriver</chromeDriverPath>
+        <ieDriverPath>${basedir}/src/main/resources/drivers/IEDriverServer.exe</ieDriverPath>
+        <geckoDriverPath>${basedir}/src/main/resources/drivers/geckodriver.exe</geckoDriverPath>
+        <phantomjsDriverPath>${basedir}/src/main/resources/drivers/phantomjs</phantomjsDriverPath>
+
+    </properties>
+
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <env>https://www.google.com</env>
+            </properties>
+        </profile>
+        <profile>
+            <id>DevEnv</id>
+            <properties>
+                <env>https://openaccount.natwest.com/content/#/onboarding/login</env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+
+        <!--<profile>-->
+        <!--<id>Nat</id>-->
+        <!--<properties>-->
+
+        <!--<Env><![CDATA[https://openaccount.natwest.com/content/#/onboarding/login?brand=NATWEST&amp applicationType=BB]]></Env>-->
+        <!--</properties>-->
+        <!--<activation>-->
+        <!--<activeByDefault>true</activeByDefault>-->
+        <!--</activation>-->
+        <!--</profile>-->
+
+
+        <profile>
+            <id>reporting</id>
+            <properties>
+                <jenkinsStyleReports>true</jenkinsStyleReports>
+            </properties>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.webdriver.version}</version>
+        </dependency>
+
+
+        <!--Selenium Dependency -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.webdriver.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-remote-driver</artifactId>
+            <version>${selenium.webdriver.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-support</artifactId>
+            <version>${selenium.webdriver.version}</version>
+        </dependency>
+
+        <!--Dependency for Sauce Labs-->
+        <!-- https://mvnrepository.com/artifact/com.saucelabs.selenium/sauce-ondemand-driver -->
+        <dependency>
+            <groupId>com.saucelabs.selenium</groupId>
+            <artifactId>sauce-ondemand-driver</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-testng -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-testng</artifactId>
+            <version>5.7.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-picocontainer -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>5.7.0</version>
+            <scope>test</scope>
+        </dependency>
+
+
+
+        <!--Mainly used for Assert and validation -->
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
+            <version>${hamcrest.version}</version>
+        </dependency>
+
+
+        <!--Cucumber Dependency & BDD -->
+
+
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-plugin -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-plugin</artifactId>
+            <version>5.6.0</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/gherkin -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>gherkin</artifactId>
+            <version>12.0.0</version>
+        </dependency>
+
+
+
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>6.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <scope>test</scope>
+        </dependency>
+
+
+<!--
+        &lt;!&ndash; https://mvnrepository.com/artifact/info.cukes/cucumber-junit &ndash;&gt;
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.junit.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>gherkin</artifactId>
+            <version>2.12.2</version>
+        </dependency>
+
+&lt;!&ndash;        <dependency>&ndash;&gt;
+&lt;!&ndash;            <groupId>info.cukes</groupId>&ndash;&gt;
+&lt;!&ndash;            <artifactId>cucumber-core</artifactId>&ndash;&gt;
+&lt;!&ndash;            <version>1.2</version>&ndash;&gt;
+&lt;!&ndash;            <scope>test</scope>&ndash;&gt;
+&lt;!&ndash;        </dependency>&ndash;&gt;
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-html</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>1.2.5</version>
+            <scope>test</scope>
+        </dependency>
+
+&lt;!&ndash;        <dependency>&ndash;&gt;
+&lt;!&ndash;            <groupId>info.cukes</groupId>&ndash;&gt;
+&lt;!&ndash;            <artifactId>cucumber-java8</artifactId>&ndash;&gt;
+&lt;!&ndash;            <version>${cucumber.version}</version>&ndash;&gt;
+&lt;!&ndash;            <scope>test</scope>&ndash;&gt;
+&lt;!&ndash;        </dependency>&ndash;&gt;
+
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-jvm-deps</artifactId>
+            <version>1.0.5</version>
+
+            <exclusions>
+                <exclusion>
+                    &lt;!&ndash;XStream is a simple library to serialize objects to XML and back again.&ndash;&gt;
+                    &lt;!&ndash;http://x-stream.github.io/index.html&ndash;&gt;
+                    <groupId>com.thoughtworks.xstream</groupId>
+                    <artifactId>xstream</artifactId>
+                </exclusion>
+
+                <exclusion>
+                    &lt;!&ndash;Diff Utils library is an OpenSource library for performing the comparison operations between texts&ndash;&gt;
+                    &lt;!&ndash;https://github.com/dnaumenko/java-diff-utils&ndash;&gt;
+                    <groupId>com.googlecode.java-diff-utils</groupId>
+                    <artifactId>diffutils</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+-->
+
+
+
+
+
+
+        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-core</artifactId>
+            <version>${cucumber.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>core</artifactId>
+            <version>1.0.47</version>
+        </dependency>
+        <dependency>
+            <groupId>net.serenity-bdd</groupId>
+            <artifactId>serenity-junit</artifactId>
+            <version>1.1.3</version>
+        </dependency>
+
+        <!--Cucuumber Reporting-->
+        <dependency>
+            <groupId>net.masterthought</groupId>
+            <artifactId>cucumber-reporting</artifactId>
+            <version>4.6.0</version>
+        </dependency>
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.github.mkolisnyk/cucumber-report-generator &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>com.github.mkolisnyk</groupId>-->
+        <!--<artifactId>cucumber-report-generator</artifactId>-->
+        <!--<version>1.3</version>-->
+        <!--</dependency>-->
+
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/com.github.mkolisnyk/cucumber-runner &ndash;&gt;-->
+        <!--<dependency>-->
+        <!--<groupId>com.github.mkolisnyk</groupId>-->
+        <!--<artifactId>cucumber-runner</artifactId>-->
+        <!--<version>1.0.8</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>com.vimalselvam</groupId>
+            <artifactId>cucumber-extentsreport</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+
+        <!--Docker Dependency-->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>selenium</artifactId>
+            <version>1.4.2</version>
+        </dependency>
+
+
+        <!--Logging Dependency-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.13.2</version>
+        </dependency>
+
+
+        <!--        <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                    <version>2.13.2</version>
+                </dependency>-->
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+
+        <!--Dependecncies copied-->
+
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>xml-apis</groupId>
+            <artifactId>xml-apis</artifactId>
+            <version>1.4.01</version>
+        </dependency>
+
+
+        <!--Guava is a set of core libraries that includes new collection types (such as multimap and multiset), immutable collections, a graph library, functional types, an in-memory cache, and APIs/utilities for concurrency, I/O, hashing, primitives, reflection, string processing, and much more!-->
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>22.0</version>
+        </dependency>
+
+        <!--Spring framework Dependency-->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>4.3.3.RELEASE</version>
+        </dependency>
+        <!--implementations of common encoders and decoders such as Base64, Hex, Phonetic and URLs-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <type>maven-plugin</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>1.8.10</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--Java API for JSON Processing-->
+
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.json</artifactId>
+            <version>1.0.4</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-gmail</artifactId>
+            <version>v1-rev56-1.22.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>1.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-oauth2</artifactId>
+            <version>v2-rev124-1.22.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.7</version>
+        </dependency>
+
+        <!--Visual testing addon-->
+        <dependency>
+            <groupId>com.applitools</groupId>
+            <artifactId>eyes-selenium-java</artifactId>
+            <version>${applitools.version}</version>
+
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.relevantcodes</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>2.41.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>2.3.23</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.saucelabs</groupId>
+            <artifactId>ci-sauce</artifactId>
+            <version>1.123</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>net.lightbody.bmp</groupId>
+            <artifactId>browsermob-core</artifactId>
+            <version>2.1.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.jesg</groupId>
+            <artifactId>phantomjsdriver</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <!--        <dependency>
+                    <groupId>org.assertj</groupId>
+                    <artifactId>assertj-core</artifactId>
+                    <version>3.11.1</version>
+                    <scope>test</scope>
+                </dependency>-->
+
+
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.11.1</version>
+            <scope>compile</scope>
+        </dependency>
+
+
+    </dependencies>
+    <!--<reporting>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.apache.maven.plugins</groupId>-->
+    <!--<artifactId>maven-surefire-report-plugin</artifactId>-->
+    <!--<version>3.0.0-M3</version>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</reporting>-->
+
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.version}</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <parallel>both</parallel>
+                    <threadCount>${surefire.fork.count}</threadCount>
+                    <useUnlimitedThreads>false</useUnlimitedThreads>
+                    <perCoreThreadCount>false</perCoreThreadCount>
+                    <argLine>-Xmx8192m</argLine>
+                    <testFailureIgnore>${testFailureIgnore}</testFailureIgnore>
+                    <includes>
+                        <include>${include}</include>
+                    </includes>
+
+                    <systemPropertyVariables>
+                        <propertyName>propertyValue</propertyName>
+                        <buildDirectory>${project.build.directory}</buildDirectory>
+                        <driverType>${driverType}</driverType>
+                        <logLevel>error</logLevel>
+                        <webdriver.chrome.driver>${chromeDriverPath}</webdriver.chrome.driver>
+                        <webdriver.ie.driver>${ieDriverPath}</webdriver.ie.driver>
+                        <webdriver.gecko.driver>${geckoDriverPath}</webdriver.gecko.driver>
+                        <jenkinsStyleReports>${jenkinsStyleReports}</jenkinsStyleReports>
+                        <ENV>${env}</ENV>
+                    </systemPropertyVariables>
+
+
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>4.6.0</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>demo</projectName>
+                            <buildNumber> ${build.number}</buildNumber>
+                            <classifications>
+                                <Platform>${platform}</Platform>
+                                <Browser>${browserName}</Browser>
+                                <Environment>${environment}</Environment>
+                                <URL>${url}</URL>
+                            </classifications>
+                            <skip>false</skip>
+                            <outputDirectory>Reports/${timestamp}</outputDirectory>
+                            <inputDirectory>${project.build.directory}</inputDirectory>
+                            <jsonFiles>**/*.json</jsonFiles>
+                            <checkBuildResult>false</checkBuildResult>
+
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+
+
+
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>${maven.surefire.plugin.version}</version>-->
+<!--                <configuration>-->
+<!--                    <forkCount>${surefire.fork.count}</forkCount>-->
+<!--                    <reuseForks>false</reuseForks>-->
+<!--                    <argLine>-Duser.language=en</argLine>-->
+<!--                    <argLine>-Xmx1024m</argLine>-->
+<!--                    <argLine>-XX:MaxPermSize=256m</argLine>-->
+<!--                    <argLine>-Dfile.encoding=UTF-8</argLine>-->
+<!--                    <useFile>false</useFile>-->
+<!--                    <testFailureIgnore>${testFailureIgnore}</testFailureIgnore>-->
+<!--                    <includes>-->
+<!--                        <include>**/*Test.class</include>-->
+<!--                    </includes>-->
+
+
+<!--                    <systemPropertyVariables>-->
+<!--                        <propertyName>propertyValue</propertyName>-->
+<!--                        <buildDirectory>${project.build.directory}</buildDirectory>-->
+<!--                        <driverType>${driverType}</driverType>-->
+<!--                        <logLevel>error</logLevel>-->
+<!--                        <webdriver.chrome.driver>${chromeDriverPath}</webdriver.chrome.driver>-->
+<!--                        <webdriver.ie.driver>${ieDriverPath}</webdriver.ie.driver>-->
+<!--                        <webdriver.gecko.driver>${geckoDriverPath}</webdriver.gecko.driver>-->
+<!--                        <jenkinsStyleReports>${jenkinsStyleReports}</jenkinsStyleReports>-->
+<!--                        <ENV>${env}</ENV>-->
+<!--                    </systemPropertyVariables>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+
+
+
+
+
+
+
+<!--            <plugin>-->
+<!--                <artifactId>maven-resources-plugin</artifactId>-->
+<!--                <version>3.1.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>copy-resources</id>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>copy-resources</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <outputDirectory>target/test-classes/come/toolbox/saucecucumberjvm</outputDirectory>-->
+<!--                            <resources>-->
+<!--                                <resource>-->
+<!--                                    <directory>src/test/resources</directory>-->
+<!--                                    <filtering>true</filtering>-->
+<!--                                </resource>-->
+<!--                            </resources>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+
+            <!--<plugin>
+
+                <groupId>com.github.temyers</groupId>
+                <artifactId>cucumber-jvm-parallel-plugin</artifactId>
+                <version>5.0.0</version>
+                <executions>
+                    <execution>
+                        <id>generateRunners</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>generateRunners</goal>
+                        </goals>
+                        <configuration>
+                            &lt;!&ndash; Mandatory &ndash;&gt;
+                            &lt;!&ndash; comma separated list of package names to scan for glue code &ndash;&gt;
+                            <glue>
+                                <package>com.portal.toolbox.step_definitions</package>
+                                <package>com.portal.toolbox.hooks</package>
+                            </glue>
+                            &lt;!&ndash; These are the default values &ndash;&gt;
+                            &lt;!&ndash; Where to output the generated Junit tests &ndash;&gt;
+                            <outputDirectory>${project.build.directory}/generated-test-sources/features
+                            </outputDirectory>
+                            &lt;!&ndash; The diectory containing your feature files. &ndash;&gt;
+                            &lt;!&ndash;                            <featuresDirectory>${features}</featuresDirectory>&ndash;&gt;
+                            <featusresDirectory>src/test/resources/features/</featusresDirectory>
+                            &lt;!&ndash; Directory where the cucumber report files shall be written &ndash;&gt;
+                            <cucumberOutputDir>${project.build.directory}/cucumber_reports/regression_results/cucumber
+                            </cucumberOutputDir>
+                            &lt;!&ndash; comma separated list of output formats &ndash;&gt;
+                            <plugins>
+                                <plugin>
+                                    <name>json</name>
+                                </plugin>
+                                <plugin>
+                                    <name>html</name>
+                                </plugin>
+                                <plugin>
+                                    <name>junit</name>
+                                </plugin>
+                            </plugins>
+                            &lt;!&ndash; CucumberOptions.strict property &ndash;&gt;
+                            <strict>true</strict>
+                            &lt;!&ndash; CucumberOptions.monochrome property &ndash;&gt;
+                            <monochrome>true</monochrome>
+                            &lt;!&ndash; The tags to run, maps to CucumberOptions.tags property &ndash;&gt;
+                            <namingScheme>pattern</namingScheme>
+                            &lt;!&ndash; The class naming pattern to use. Only required/used if naming scheme is 'pattern'.&ndash;&gt;
+                            <namingPattern>{f}_Parallel{c}Test</namingPattern>
+                            &lt;!&ndash; If set to true, only feature files containing the required tags shall be generated. &ndash;&gt;
+                            <parallelScheme>FEATURE</parallelScheme>
+                            &lt;!&ndash; Excluded tags (~@notMe) are ignored. &ndash;&gt;
+                            <tags>
+                                <tag>~@manual</tag>
+                                <tag>~@wip</tag>
+                            </tags>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+  <!--          <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>merge-cucumber-js-reports</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <classpathScope>test</classpathScope>
+                            <mainClass>${project.groupId}.JSONReportMerger</mainClass>
+                            <arguments>
+                                <argument>target/cucumber_reports/regression_results</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+-->
+
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>test-execution-summary</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <configuration>
+                            <classpathScope>test</classpathScope>
+                            <mainClass>com.portal.framework.ExecutionSummary</mainClass>
+                            <arguments>
+                                <argument>${project.build.directory}/cucumber.json</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+
+           <!-- <plugin>
+                <groupId>net.masterthought</groupId>
+                <artifactId>maven-cucumber-reporting</artifactId>
+                <version>5.0.0</version>
+                <executions>
+                    <execution>
+                        <id>execution</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <projectName>Peppin's</projectName>
+                            <buildNumber>${build.number}</buildNumber>
+                            &lt;!&ndash; optional, per documentation set this to "true" to bypass generation of Cucumber Reports entirely, defaults to false if not specified &ndash;&gt;
+                            <skip>false</skip>
+
+                            <outputDirectory>${project.build.directory}/cucumber_reports/regression_results
+                            </outputDirectory>
+                            &lt;!&ndash; optional, defaults to outputDirectory if not specified &ndash;&gt;
+                            <inputDirectory>${project.build.directory}/cucumber_reports/regression_results/cucumber</inputDirectory>
+                            <jsonFiles>**/*.json</jsonFiles>
+&lt;!&ndash;                            <cucumberOutput>&ndash;&gt;
+&lt;!&ndash;                                ${project.build.directory}/cucumber_reports/regression_results/cucumber.json&ndash;&gt;
+&lt;!&ndash;                            </cucumberOutput>&ndash;&gt;
+                            <classifications>
+                                <Platform>${platform}</Platform>
+                                <Browser>${browserName}</Browser>
+                                <URL>${env}</URL>
+                            </classifications>
+
+                            <parallelTesting>false</parallelTesting>
+                            &lt;!&ndash; optional, set true to group features by its Ids &ndash;&gt;
+                            <mergeFeaturesById>false</mergeFeaturesById>
+                            &lt;!&ndash; optional, set true to get a final report with latest results of the same test from different test runs &ndash;&gt;
+                            <mergeFeaturesWithRetest>false</mergeFeaturesWithRetest>
+                            &lt;!&ndash; optional, set true to fail build on test failures &ndash;&gt;
+                            <checkBuildResult>false</checkBuildResult>
+&lt;!&ndash;                            <enableFlashCharts>false</enableFlashCharts>&ndash;&gt;
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>-->
+
+        </plugins>
+    </build>
+</project>
